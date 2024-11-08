@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculator</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+      /* Base styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #f5f7fa;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .calculator-container {
+      text-align: center;
+    }
+
+    .calculator-heading {
+      font-size: 40px;
+      color: #2c3e50;
+      margin-bottom: 20px;
+    }
+
+    .calculator {
+      background: linear-gradient(145deg, #e0e5ec, #ffffff);
+      padding: 20px;
+      border-radius: 20px;
+      box-shadow: 10px 10px 20px #c5c9ce, -10px -10px 20px #ffffff;
+      width: 350px;
+    }
+
+    .calculator-display {
+      width: 100%;
+      height: 70px;
+      font-size: 36px;
+      text-align: right;
+      padding: 15px;
+      border: none;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      background-color: #ecf0f1;
+      box-shadow: inset 5px 5px 10px #cfd4d9, inset -5px -5px 10px #ffffff;
+      color: #2c3e50;
+    }
+
+    /* Button styles */
+    .calculator-buttons {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 15px;
+    }
+
+    .button {
+      font-size: 24px;
+      padding: 20px;
+      border-radius: 15px;
+      background: linear-gradient(145deg, #e0e5ec, #ffffff);
+      box-shadow: 5px 5px 10px #cfd4d9, -5px -5px 10px #ffffff;
+      border: none;
+      cursor: pointer;
+      color: #2c3e50;
+      transition: all 0.3s ease;
+    }
+
+    .button:active {
+      transform: translateY(4px);
+      box-shadow: 2px 2px 5px #cfd4d9, -2px -2px 5px #ffffff;
+    }
+
+    .button:hover {
+      background: #f0f0f3;
+      box-shadow: inset 5px 5px 10px #cfd4d9, inset -5px -5px 10px #ffffff;
+    }
+
+    /* Operator and special button styles */
+    .operator {
+      background: linear-gradient(145deg, #ff7e67, #ff6348);
+      color: #ffffff;
+    }
+
+    .operator:hover {
+      background: linear-gradient(145deg, #ff6c50, #ff5235);
+    }
+
+    .clear {
+      background: linear-gradient(145deg, #ff6c50, #ff5235);
+      color: white;
+    }
+
+    .clear:hover {
+      background: linear-gradient(145deg, #ff6348, #ff3b26);
+    }
+
+    .equal {
+      background: linear-gradient(145deg, #26de81, #20bf6b);
+      color: white;
+    }
+
+    .equal:hover {
+      background: linear-gradient(145deg, #20bf6b, #1abc9c);
+    }
+
+    .zero {
+      grid-column: span 2;
+    }
+
+    /* Responsive design for phone view */
+    @media (max-width: 768px) {
+      .calculator {
+        width: 100%;
+        max-width: 350px;
+        padding: 15px;
+      }
+
+      .button {
+        font-size: 20px;
+        padding: 15px;
+      }
+
+      .calculator-display {
+        height: 60px;
+        font-size: 30px;
+      }
+
+      .calculator-heading {
+        font-size: 30px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .calculator {
+        width: 100%;
+        max-width: 320px;
+      }
+
+      .button {
+        font-size: 18px;
+        padding: 12px;
+      }
+
+      .calculator-display {
+        height: 50px;
+        font-size: 26px;
+      }
+
+      .calculator-heading {
+        font-size: 24px;
+      }
+    }
+
+
+
+
+  </style>
+
+</head>
+<body>
+  <div class="calculator-container">
+    <h1 class="calculator-heading">Calculator</h1>
+    <div class="calculator">
+      <input type="text" class="calculator-display" id="display" disabled />
+
+      <div class="calculator-buttons">
+        <!-- First Row -->
+        <button class="button clear" onclick="clearDisplay()">C</button>
+        <button class="button" onclick="backspace()">←</button>
+        <button class="button operator" onclick="appendValue('%')">%</button>
+        <button class="button operator" onclick="appendValue('/')">÷</button>
+        
+        <!-- Second Row -->
+        <button class="button" onclick="appendValue('7')">7</button>
+        <button class="button" onclick="appendValue('8')">8</button>
+        <button class="button" onclick="appendValue('9')">9</button>
+        <button class="button operator" onclick="appendValue('*')">×</button>
+        
+        <!-- Third Row -->
+        <button class="button" onclick="appendValue('4')">4</button>
+        <button class="button" onclick="appendValue('5')">5</button>
+        <button class="button" onclick="appendValue('6')">6</button>
+        <button class="button operator" onclick="appendValue('-')">−</button>
+        
+        <!-- Fourth Row -->
+        <button class="button" onclick="appendValue('1')">1</button>
+        <button class="button" onclick="appendValue('2')">2</button>
+        <button class="button" onclick="appendValue('3')">3</button>
+        <button class="button operator" onclick="appendValue('+')">+</button>
+        
+        <!-- Fifth Row -->
+        <button class="button zero" onclick="appendValue('0')">0</button>
+        <button class="button" onclick="appendValue('.')">.</button>
+        <button class="button equal" onclick="calculate()">=</button>
+      </div>
+    </div>
+  </div>
+  <script>
+      function appendValue(value) {
+      document.getElementById("display").value += value;
+      }
+
+      function clearDisplay() {
+        document.getElementById("display").value = "";
+      }
+
+      function backspace() {
+        let display = document.getElementById("display").value;
+        document.getElementById("display").value = display.slice(0, -1);
+      }
+
+      function calculate() {
+        let expression = document.getElementById("display").value;
+        if (expression) {
+          try {
+            document.getElementById("display").value = eval(expression);
+          } catch (error) {
+            document.getElementById("display").value = "Error";
+          }
+        }
+      }
+
+
+  </script>
+</body>
+</html>
